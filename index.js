@@ -31,7 +31,7 @@ function start() {
                 "view department",
                 "view roles",
                 "view employees",
-                "update employee roles"
+                "update employee role"
             ]
 
         }
@@ -55,7 +55,8 @@ function start() {
 
                 break;
             case "view employees": viewEmployees()
-
+                break;
+            case "update employee role": updateEmployeesRole()
                 break;
             default:
                 break;
@@ -179,7 +180,7 @@ function addEmployees() {
         {
             name: 'employeesLastName',
             type: 'input',
-            message:'what is the employees last name?'
+            message: 'what is the employees last name?'
         },
         {
             name: 'employeeRoleId',
@@ -220,3 +221,29 @@ function viewEmployees() {
     })
 }
 
+//updates role id
+function updateEmployeesRole() {
+
+    inquirer.prompt([
+        {
+            name: 'emploId',
+            type: 'number',
+            message: 'what is the emplyees id?'
+        },
+        {
+            name: 'newRoleId',
+            type: 'number',
+            message: 'what do you want to update the employees role id to?'
+        }
+    ]).then(function (answer) {
+        connection.query("UPDATE employees SET role_id = ? WHERE id = ?", [answer.newRoleId, answer.emploId],
+            function (err, res) {
+                if (err) throw err
+                console.log('update complete ' + res.affectedRows + " role id updated")
+                start()
+            }
+        )
+    })
+
+
+}
